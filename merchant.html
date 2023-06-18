@@ -222,8 +222,12 @@
                                                 <input type="email" name="email" id="email" placeholder=""
                                                     class="ab-input-info-item">
                                             </div>
-                                     
+                                            <button class="ab-button-style ab-buy-button ab-paypal-buy-button">Buy now with <img
+                                                src="./assests/image/paypal.svg"
+                                                alt="paypal icons"
+                                                class="payment-methods-img"></button>
                                         </div>
+
                                         <!-- [end] -->
                                     </div>
                                 </div>
@@ -391,10 +395,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="ab-button-style ab-buy-button ab-paypal-buy-button">Buy now with <img
-                            src="./assests/image/paypal.svg"
-                            alt="paypal icons"
-                            class="payment-methods-img"></button>
+                   
                     </div>
                     <!-- [END] -->
                     <!-- footer bottom content start -->
@@ -417,12 +418,15 @@
     ItemSubject: "Example Subject",
     itemDescription: "This is an example description for the item.",
     itemWarning: "This is an example warning for the item.",
-    itemImage: "https://webdev983.github.io/accbuddy/assests/image/gmail-small-icons0.svg"
+    itemImage: "https://webdev983.github.io/accbuddy/assests/image/gmail-small-icons0.svg",
+    stock:10
 };
 const customerInformation={
     customerID: "blablabla",
 	discount: "10",
 };
+
+// amoutt-price calculation ----------start//
  const prductAmountInput=document.getElementById("total-quantity-for-payment");
  const intitialPriceField=document.getElementById("initial-total-price-for-payment")
  const discountField=document.getElementById("customer-discount-for-payment")
@@ -445,10 +449,30 @@ const customerInformation={
    
    
       });
+// amoutt-price calculation ----------end------------------//
 
 
+// select a payment methode-----------------------------start//
+
+const paypalCheckbox = document.getElementById('abPayment1');
+    const anotherPaymentCheckbox = document.getElementById('abPayment2');
+    const orderDetailsGroup= document.getElementsByClassName("ab-order-details-popup-input-group")[0]
+    paypalCheckbox.addEventListener('change', function() {
+      if (paypalCheckbox.checked) {
+        anotherPaymentCheckbox.checked = false;
+        console.log(orderDetailsGroup);
+    orderDetailsGroup.classList.add("select-merchant");
+       
+      }
+    });
     
-
+    anotherPaymentCheckbox.addEventListener('change', function() {
+      if (anotherPaymentCheckbox.checked) {
+        paypalCheckbox.checked = false;
+        orderDetailsGroup.classList.remove("select-merchant");
+      }
+    });
+// select a payment methode-----------------------------end//
         </script>
     </body>
 
