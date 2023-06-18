@@ -102,7 +102,11 @@
                                 <button class="ab-button-style ab-footer-button">Send</button>
                             </div>
                         </div>
+                       
+                            </div>
+                        
                     </form>
+               
                 </div>
                 <!-- [END] -->
 
@@ -152,20 +156,26 @@
                                         <div class="ab-order-info-details">
                                             <div class="ab-order-info-item">
                                                 <p class="ab-quantity-title">Quantity</p>
-                                                <input type="text" class="ab-quantity-number"
-                                                    value="100">
+                                                <input type="number" id="total-quantity-for-payment" class="ab-quantity-number"
+                                                    min="0" value="1">
                                             </div>
                                             <div class="ab-order-info-item">
                                                 <p class="ab-price-title">Price</p>
-                                                <span class="ab-order-price">$0.15</span>
+                                                <span  class="ab-order-price">$
+                                                    <span id="initial-total-price-for-payment">10.00</span> 
+                                                </span>
                                             </div>
                                             <div class="ab-order-info-item">
                                                 <p class="ab-discount-title">Your Discount</p>
-                                                <span class="ab-order-price">-$2.00</span>
+                                                <span  class="ab-order-price">-$
+                                                    <span id="customer-discount-for-payment">0.00 </span>
+                                                </span>
                                             </div>
                                             <div class="ab-order-info-item">
                                                 <p class="ab-due-title">Amount due</p>
-                                                <span class="ab-order-price">$13.00</span>
+                                                <span  class="ab-order-price">$ 
+                                                    <span id="total-price-for-payment">10.00</span>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -212,10 +222,7 @@
                                                 <input type="email" name="email" id="email" placeholder=""
                                                     class="ab-input-info-item">
                                             </div>
-                                            <button class="ab-button-style ab-buy-button ab-paypal-buy-button">Buy now with <img
-                                                src="./assests/image/paypal.svg"
-                                                alt="paypal icons"
-                                                class="payment-methods-img"></button>
+                                     
                                         </div>
                                         <!-- [end] -->
                                     </div>
@@ -235,7 +242,9 @@
                                         them for the above purpose!
                                     </p>
                                 </div>
+                               
                             </div>
+                           
                         </div>
                         <!-- promo content start -->
                         <div class="ab-promo-content-box">
@@ -382,6 +391,10 @@
                                 </div>
                             </div>
                         </div>
+                        <button class="ab-button-style ab-buy-button ab-paypal-buy-button">Buy now with <img
+                            src="./assests/image/paypal.svg"
+                            alt="paypal icons"
+                            class="payment-methods-img"></button>
                     </div>
                     <!-- [END] -->
                     <!-- footer bottom content start -->
@@ -394,8 +407,49 @@
             </div>
 
             <!-- js code start here -->
+
         </footer>
         <!-- ============footer section styles==========[end] -->
+        <script>
+       const selectedItem= {
+    itemID: 1,
+	price: 10,
+    ItemSubject: "Example Subject",
+    itemDescription: "This is an example description for the item.",
+    itemWarning: "This is an example warning for the item.",
+    itemImage: "https://webdev983.github.io/accbuddy/assests/image/gmail-small-icons0.svg"
+};
+const customerInformation={
+    customerID: "blablabla",
+	discount: "10",
+};
+ const prductAmountInput=document.getElementById("total-quantity-for-payment");
+ const intitialPriceField=document.getElementById("initial-total-price-for-payment")
+ const discountField=document.getElementById("customer-discount-for-payment")
+ const totalPriceField=document.getElementById("total-price-for-payment")
+ let productAmout;
+ prductAmountInput.addEventListener('input', function(event) {
+    productAmount =parseFloat(event.target.value);
+    
+    const initialPrice= productAmount * parseFloat(selectedItem.price);
+    intitialPriceField.textContent=initialPrice.toFixed(2);
+    const discount= productAmount * (parseFloat(customerInformation.discount)/100)
+    discountField.textContent=discount.toFixed(2) ;
+    const total= parseFloat(intitialPriceField.textContent)- parseFloat(discountField.textContent) ;
+    totalPriceField.textContent=total.toFixed(2);
+
+   
+   
+
+   
+   
+   
+      });
+
+
+    
+
+        </script>
     </body>
 
 </html>
