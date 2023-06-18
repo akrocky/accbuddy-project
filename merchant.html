@@ -477,7 +477,7 @@ const paypalCheckbox = document.getElementById('abPayment1');
 const handlePaymentByPaypal=()=>{
     if (productAmount < parseFloat(selectedItem.paypalLimit)) {
       
-     alert(`you have to order minimum ${selectedItem.stock} item `) ;
+     alert(`you have to order minimum ${selectedItem.paypalLimit} item `) ;
 
 }
 if (productAmount> parseFloat(selectedItem.stock) ) {
@@ -485,7 +485,41 @@ if (productAmount> parseFloat(selectedItem.stock) ) {
 
 }
 
-
+const payload ={
+	ppCreateOrder: {
+	  intent: "CAPTURE",
+	  purchase_units: [
+		{
+		  amount: {
+			currency_code: "USD",
+			value: totalPriceField.textContent
+		  }
+		}
+	  ]
+	},
+	shoppingCartData: {
+	  quantity: productAmount,
+	  itemID: selectedItem.itemID,
+	  discount: customerInformation.discount,
+	  customerID: customerInformation.customerID
+	}
+  }
+fetch("https://api.accbuddy.com/public", {
+    method: 'post',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body:  JSON.stringify(payload),
+ 
+})
+.then(response => response.json())
+  .then(data => {
+    console.log('Post created:', data);
+  })
+  .catch(error => {
+    //handle error
+    console.log(error);
+  });
 }
 // paypal payment button click---------------------------end------//
         </script>
