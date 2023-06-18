@@ -217,12 +217,8 @@
                                         <!-- where user select merchant then need to pass a extra class
                                              'select-merchant' then the email btn should be shown -->
                                         <div class="ab-order-details-popup-input-group">
-                                            <div class="ab-order-info-input-group">
-                                                <label class="ab-order-input-info-title">Email</label>
-                                                <input type="email" name="email" id="email" placeholder=""
-                                                    class="ab-input-info-item">
-                                            </div>
-                                            <button class="ab-button-style ab-buy-button ab-paypal-buy-button">Buy now with <img
+                                            
+                                            <button class="ab-button-style ab-buy-button ab-paypal-buy-button" onclick="handlePaymentByPaypal()">Buy now with <img
                                                 src="./assests/image/paypal.svg"
                                                 alt="paypal icons"
                                                 class="payment-methods-img"></button>
@@ -419,19 +415,20 @@
     itemDescription: "This is an example description for the item.",
     itemWarning: "This is an example warning for the item.",
     itemImage: "https://webdev983.github.io/accbuddy/assests/image/gmail-small-icons0.svg",
-    stock:10
+    stock:10,
+    paypalLimit:4
 };
 const customerInformation={
     customerID: "blablabla",
 	discount: "10",
 };
-
+let productAmount=1;
 // amoutt-price calculation ----------start//
  const prductAmountInput=document.getElementById("total-quantity-for-payment");
  const intitialPriceField=document.getElementById("initial-total-price-for-payment")
  const discountField=document.getElementById("customer-discount-for-payment")
  const totalPriceField=document.getElementById("total-price-for-payment")
- let productAmout;
+
  prductAmountInput.addEventListener('input', function(event) {
     productAmount =parseFloat(event.target.value);
     
@@ -473,6 +470,24 @@ const paypalCheckbox = document.getElementById('abPayment1');
       }
     });
 // select a payment methode-----------------------------end//
+
+
+// paypal payment button click---------------------------start------//
+
+const handlePaymentByPaypal=()=>{
+    if (productAmount < parseFloat(selectedItem.paypalLimit)) {
+      
+     alert(`you have to order minimum ${selectedItem.stock} item `) ;
+
+}
+if (productAmount> parseFloat(selectedItem.stock) ) {
+     alert(`we have only ${selectedItem.stock} in stock`) ;
+
+}
+
+
+}
+// paypal payment button click---------------------------end------//
         </script>
     </body>
 
