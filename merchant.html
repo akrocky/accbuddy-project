@@ -173,8 +173,8 @@
                                                 </span>
                                             </div>
                                             <div class="ab-order-info-item">
-                                                <p class="ab-due-title">Amount due</p>
-                                                <span  class="ab-order-price">$ 
+                                                <p id="total-price-for-payment-title" class="ab-due-title">Amount due</p>
+                                                <span id="total-price-for-payment-currency" class="ab-order-price">$ 
                                                     <span id="total-price-for-payment">10.00</span>
                                                 </span>
                                             </div>
@@ -467,20 +467,29 @@ let productAmount=1;
 const paypalCheckbox = document.getElementById('abPayment1');
     const anotherPaymentCheckbox = document.getElementById('abPayment2');
     const orderDetailsGroup= document.getElementsByClassName("ab-order-details-popup-input-group")[0]
+
+    // for adding conditional css  in total due price
+    const totalPriceTitleField=document.getElementById("total-price-for-payment-title")
+const totalPriceCurrencyField=document.getElementById("total-price-for-payment-currency")
+// for adding css 
     paypalCheckbox.addEventListener('change', function() {
       if (paypalCheckbox.checked) {
-        console.log("dukche");
+      
         anotherPaymentCheckbox.checked = false;
         console.log(totalPriceField.textContent);
         if (parseFloat(totalPriceField.textContent) > 10) {
-            console.log("dukche1");
+           
+            totalPriceTitleField.classList.add('error');
+            totalPriceCurrencyField.classList.add('error');
             totalPriceField.classList.add('error');
-          paypalCheckbox.classList.add('error');
+         
+            
           return
         } else {
-            console.log("dukche2");
+            totalPriceTitleField.classList.remove('error');
+            totalPriceCurrencyField.classList.remove('error');
             totalPriceField.classList.remove('error');
-          paypalCheckbox.classList.remove('error');
+    
         }
        
     orderDetailsGroup.classList.add("select-merchant");

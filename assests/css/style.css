@@ -1301,5 +1301,5 @@ main.ab-main--content.payment-details--page .ab-promo-content-box {
 
 /* // for error  */
 .error {
-  color: red;
+  color: red !important;
 }
