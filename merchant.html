@@ -158,6 +158,7 @@
                                                 <p class="ab-quantity-title">Quantity</p>
                                                 <input type="number" id="total-quantity-for-payment" class="ab-quantity-number"
                                                     min="0" value="1">
+                                                    <span id="errorSpan-for-total-quantity"></span>
                                             </div>
                                             <div class="ab-order-info-item">
                                                 <p class="ab-price-title">Price</p>
@@ -410,13 +411,13 @@
         <script>
        const selectedItem= {
     itemID: 1,
-	price: 10,
+	price: 2,
     ItemSubject: "Example Subject",
     itemDescription: "This is an example description for the item.",
     itemWarning: "This is an example warning for the item.",
     itemImage: "https://webdev983.github.io/accbuddy/assests/image/gmail-small-icons0.svg",
-    stock:10,
-    paypalLimit:4
+    stock:8,
+   
 };
 const customerInformation={
     customerID: "blablabla",
@@ -431,6 +432,18 @@ let productAmount=1;
 
  prductAmountInput.addEventListener('input', function(event) {
     productAmount =parseFloat(event.target.value);
+    const span = document.getElementById("errorSpan-for-total-quantity");
+    
+    if (productAmount >parseFloat(selectedItem.stock)) {
+        prductAmountInput.style.border = "1px solid red";
+        span.innerHTML = `sorry you cannot buy more then ${selectedItem.stock}`;
+        span.classList.add("error");
+      } else {
+        prductAmountInput.style.borderColor = "";
+        span.innerHTML = "";
+        span.classList.remove("error");
+      }
+    
     
     const initialPrice= productAmount * parseFloat(selectedItem.price);
     intitialPriceField.textContent=initialPrice.toFixed(2);
@@ -456,8 +469,20 @@ const paypalCheckbox = document.getElementById('abPayment1');
     const orderDetailsGroup= document.getElementsByClassName("ab-order-details-popup-input-group")[0]
     paypalCheckbox.addEventListener('change', function() {
       if (paypalCheckbox.checked) {
+        console.log("dukche");
         anotherPaymentCheckbox.checked = false;
-        console.log(orderDetailsGroup);
+        console.log(totalPriceField.textContent);
+        if (parseFloat(totalPriceField.textContent) > 10) {
+            console.log("dukche1");
+            totalPriceField.classList.add('error');
+          paypalCheckbox.classList.add('error');
+          return
+        } else {
+            console.log("dukche2");
+            totalPriceField.classList.remove('error');
+          paypalCheckbox.classList.remove('error');
+        }
+       
     orderDetailsGroup.classList.add("select-merchant");
        
       }
@@ -474,16 +499,17 @@ const paypalCheckbox = document.getElementById('abPayment1');
 
 // paypal payment button click---------------------------start------//
 
+
 const handlePaymentByPaypal=()=>{
-    if (productAmount < parseFloat(selectedItem.paypalLimit)) {
+
+
+    if (10 > parseFloat(totalPriceField.textContent)) {
       
      alert(`you have to order minimum ${selectedItem.paypalLimit} item `) ;
+     return
 
 }
-if (productAmount> parseFloat(selectedItem.stock) ) {
-     alert(`we have only ${selectedItem.stock} in stock`) ;
 
-}
 
 const payload ={
 	ppCreateOrder: {

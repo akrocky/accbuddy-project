@@ -1298,3 +1298,8 @@ main.ab-main--content.payment-details--page .ab-promo-content-box {
     margin-bottom: 0;
   }
 }
+
+/* // for error  */
+.error {
+  color: red;
+}
