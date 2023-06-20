@@ -198,8 +198,10 @@
                                                                     alt="paypal icons"
                                                                     class="payment-methods-img"></div>
                                                         </label>
+                                                        <p id="error-with-paypal-payment" class="error" ></p>
                                                     </div>
                                                 </li>
+
                                                 <li class="ab-payment-items">
                                                     <div class="ab-check-box-select">
                                                         <label for="abPayment2" class="ab-checkbox-content">
@@ -214,6 +216,7 @@
                                                     </div>
                                                 </li>
                                             </ul>
+                                            
                                         </div>
                                         <!-- where user select merchant then need to pass a extra class
                                              'select-merchant' then the email btn should be shown -->
@@ -472,38 +475,71 @@ const paypalCheckbox = document.getElementById('abPayment1');
     const totalPriceTitleField=document.getElementById("total-price-for-payment-title")
 const totalPriceCurrencyField=document.getElementById("total-price-for-payment-currency")
 // for adding css 
-    paypalCheckbox.addEventListener('change', function() {
-      if (paypalCheckbox.checked) {
+const paypalErrorMessageTag= document.getElementById("error-with-paypal-payment");
+
+const showErrorWithPaypalPayment=()=>{
+    if (paypalCheckbox.checked) {
       
-        anotherPaymentCheckbox.checked = false;
-        console.log(totalPriceField.textContent);
-        if (parseFloat(totalPriceField.textContent) > 10) {
-           
-            totalPriceTitleField.classList.add('error');
-            totalPriceCurrencyField.classList.add('error');
-            totalPriceField.classList.add('error');
+      anotherPaymentCheckbox.checked = false;
+    
+      // in check
+      if (parseFloat(totalPriceField.textContent) > 10) {
          
-            
-          return
-        } else {
-            totalPriceTitleField.classList.remove('error');
+          totalPriceTitleField.classList.add('error');
+          totalPriceCurrencyField.classList.add('error');
+          totalPriceField.classList.add('error');
+       paypalErrorMessageTag.textContent="Sorry you cant buy with paypal ... for due more than $10.Please ... chhose another merchant";
+       paypalErrorMessageTag.innerHTML = h1.innerHTML.replace(/\r\n?/g, '<br />');
+        return
+      } else {
+        
+          orderDetailsGroup.classList.add("select-merchant");
+          totalPriceTitleField.classList.remove('error');
+          totalPriceCurrencyField.classList.remove('error');
+          totalPriceField.classList.remove('error');
+          paypalErrorMessageTag.textContent = "";
+          return;
+      }
+  //    in checked
+ 
+     
+    }else{
+        orderDetailsGroup.classList.remove("select-merchant");
+        totalPriceTitleField.classList.remove('error');
             totalPriceCurrencyField.classList.remove('error');
             totalPriceField.classList.remove('error');
+        orderDetailsGroup.classList.remove("select-merchant");
+        paypalErrorMessageTag.textContent="";
+    }
+
+            
+}
+    paypalCheckbox.addEventListener('change', function() {
+       
+
+        showErrorWithPaypalPayment()
     
-        }
-       
-    orderDetailsGroup.classList.add("select-merchant");
-       
-      }
+
+
     });
     
     anotherPaymentCheckbox.addEventListener('change', function() {
       if (anotherPaymentCheckbox.checked) {
         paypalCheckbox.checked = false;
-        orderDetailsGroup.classList.remove("select-merchant");
+       
+        showErrorWithPaypalPayment()
       }
     });
 // select a payment methode-----------------------------end//
+
+// if total price change check condtion---start----------
+
+totalPriceField.addEventListener('DOMSubtreeModified', function() {
+  // Get the new value of the span
+  showErrorWithPaypalPayment()
+});
+
+// if total price change check condtion--------end-----------
 
 
 // paypal payment button click---------------------------start------//
@@ -523,21 +559,21 @@ const handlePaymentByPaypal=()=>{
 const payload ={
 	ppCreateOrder: {
 	  intent: "CAPTURE",
+      application_context:{
+      return_ur:"https://example.com/return",
+      cancel_url:"https://example.com/cancel",
+      user_action:"PAY_NOW"
+      },
 	  purchase_units: [
 		{
 		  amount: {
 			currency_code: "USD",
-			value: totalPriceField.textContent
+			value: "240.00"
 		  }
 		}
 	  ]
 	},
-	shoppingCartData: {
-	  quantity: productAmount,
-	  itemID: selectedItem.itemID,
-	  discount: customerInformation.discount,
-	  customerID: customerInformation.customerID
-	}
+	
   }
 fetch("https://api.accbuddy.com/public", {
     method: 'post',
